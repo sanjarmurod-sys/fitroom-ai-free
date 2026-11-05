@@ -14,6 +14,7 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.pose.*
+import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions
 import java.util.concurrent.Executors
 import kotlin.math.*
 class MainActivity : ComponentActivity() {
@@ -103,7 +104,8 @@ class MainActivity : ComponentActivity() {
    val lh=p.getPoseLandmark(PoseLandmark.LEFT_HIP)?:return
    val rh=p.getPoseLandmark(PoseLandmark.RIGHT_HIP)?:return
    val sx=width.toFloat()/sw; val sy=height.toFloat()/sh
-   fun x(v:Float)=v*sx; fun y(v:Float)=v*sy
+   fun x(v:Float)=v*sx
+   fun y(v:Float)=v*sy
    val sl=PointF(x(l.position.x),y(l.position.y)); val sr=PointF(x(r.position.x),y(r.position.y))
    val hl=PointF(x(lh.position.x),y(lh.position.y)); val hr=PointF(x(rh.position.x),y(rh.position.y))
    val body=Path().apply { moveTo(sl.x,sl.y); lineTo(sr.x,sr.y); lineTo(hr.x,hr.y); lineTo(hl.x,hl.y); close() }
