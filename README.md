@@ -1,15 +1,9 @@
 # FitRoom AI Free
 
-Bepul, qurilma ichida ishlaydigan AR kiyib ko'rish Android prototipi.
+Bepul, telefonda ishlaydigan AR kiyib ko‘rish prototipi. CameraX jonli kamera va qurilmada ML Kit Pose Detection ishlatiladi. Shaffof PNG kiyim rasmini yoki tayyor rangli ustki qatlamni tanlash mumkin. Bulutli API, server, akkaunt va pullik xizmatlar yo‘q.
 
-## Build
+## Cheklov
+Bu AR qatlamli prototip, generativ yoki fotorealistik virtual try-on emas. Mato bukilishi, tana segmentatsiyasi va tabiiy deformatsiya qilinmaydi.
 
-GitHub Actions workflow `.github/workflows/android-build.yml` har bir `main` push va qo'lda ishga tushirishda debug APK yig'adi. Natija Actions artifact sifatida `fitroom-ai-free-debug-apk` nomi bilan saqlanadi.
-
-## Muhim cheklov
-
-Bu v1 AR qatlamli virtual try-on: ML Kit pose landmarks yordamida tanani kuzatadi va kiyim overlayini kameraga joylaydi. Bu Anywear darajasidagi generativ, fotorealistik kiyim almashtirish emas. Hech qanday pullik AI API yoki server ishlatilmaydi.
-
-## Build artifact
-
-GitHub → Actions → FitRoom AI Free Android Build → Artifacts.
+## APK olish
+`main` branch’ga push bo‘lgach GitHub → Actions → FitRoom AI Free Android Build sahifasidan `fitroom-ai-free-debug-apk` artifact’ini yuklab oling.

@@ -1,13 +1,10 @@
 name: FitRoom AI Free Android Build
-
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
-
 permissions:
   contents: read
-
 jobs:
   build:
     runs-on: ubuntu-latest
