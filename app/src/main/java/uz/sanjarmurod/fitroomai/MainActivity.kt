@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
   status = label("Tayyor. Kamerani yoqing va tanangizni kadrga kiriting.",12f,Color.LTGRAY,false); root.addView(status)
   val colors = LinearLayout(this).apply { orientation=0 }
   listOf("Qora" to Color.DKGRAY,"Ko‘k" to Color.rgb(45,102,185),"Qizil" to Color.rgb(184,58,68),"Yashil" to Color.rgb(46,130,91),"Oq" to Color.rgb(228,228,220)).forEach { (name,c) ->
-   colors.addView(Button(this).apply { text=name; textSize=10f; setOnClickListener { overlay.setColor(c); status.text="$name rang tanlandi" } },LinearLayout.LayoutParams(0,dp(44),1f))
+   colors.addView(Button(this).apply { text=name; textSize=10f; setOnClickListener { overlay.changeTint(c); status.text="$name rang tanlandi" } },LinearLayout.LayoutParams(0,dp(44),1f))
   }
   root.addView(colors)
   root.addView(Button(this).apply { text="KIYIM PNG TANLASH"; setOnClickListener { picker.launch("image/*") } },LinearLayout.LayoutParams(-1,dp(48)))
@@ -93,7 +93,7 @@ class MainActivity : ComponentActivity() {
  private class GarmentOverlay(ctx:android.content.Context):View(ctx){
   private val paint=Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
   private var pose:Pose?=null; private var sw=1; private var sh=1; private var bitmap:Bitmap?=null; private var tint=Color.rgb(48,105,180)
-  fun setColor(c:Int){tint=c;invalidate()}
+  fun changeTint(c:Int){tint=c;invalidate()}
   fun setGarment(b:Bitmap?){bitmap=b;invalidate()}
   fun updatePose(p:Pose,w:Int,h:Int){pose=p;sw=w.coerceAtLeast(1);sh=h.coerceAtLeast(1);postInvalidate()}
   override fun onDraw(canvas:Canvas){
