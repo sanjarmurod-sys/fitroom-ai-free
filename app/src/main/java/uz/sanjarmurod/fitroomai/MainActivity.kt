@@ -19,7 +19,7 @@ import java.util.concurrent.Executors
 import kotlin.math.*
 class MainActivity : ComponentActivity() {
  private lateinit var preview: PreviewView
- private lateinit var overlay: GarmentOverlay
+ private lateinit var garmentOverlay: GarmentOverlay
  private lateinit var status: TextView
  private val executor = Executors.newSingleThreadExecutor()
  private lateinit var detector: PoseDetector
@@ -45,13 +45,13 @@ class MainActivity : ComponentActivity() {
   root.addView(label("Bepul AR sinov. Kamera tasviri qurilmada qayta ishlanadi.",12f,Color.LTGRAY,false))
   val frame = FrameLayout(this).apply { setBackgroundColor(Color.rgb(24,29,39)) }
   preview = PreviewView(this).apply { scaleType=PreviewView.ScaleType.FILL_CENTER; implementationMode=PreviewView.ImplementationMode.COMPATIBLE }
-  overlay = GarmentOverlay(this)
-  frame.addView(preview); frame.addView(overlay)
+  garmentOverlay = GarmentOverlay(this)
+  frame.addView(preview); frame.addView(garmentOverlay)
   root.addView(frame,LinearLayout.LayoutParams(-1,0,1f).apply { topMargin=dp(12); bottomMargin=dp(10) })
   status = label("Tayyor. Kamerani yoqing va tanangizni kadrga kiriting.",12f,Color.LTGRAY,false); root.addView(status)
   val colors = LinearLayout(this).apply { orientation=0 }
   listOf("Qora" to Color.DKGRAY,"Ko‘k" to Color.rgb(45,102,185),"Qizil" to Color.rgb(184,58,68),"Yashil" to Color.rgb(46,130,91),"Oq" to Color.rgb(228,228,220)).forEach { (name,c) ->
-   colors.addView(Button(this).apply { text=name; textSize=10f; setOnClickListener { overlay.tint = c; overlay.invalidate(); status.text="$name rang tanlandi" } },LinearLayout.LayoutParams(0,dp(44),1f))
+   colors.addView(Button(this).apply { text=name; textSize=10f; setOnClickListener { garmentOverlay.tint = c; garmentOverlay.invalidate(); status.text="$name rang tanlandi" } },LinearLayout.LayoutParams(0,dp(44),1f))
   }
   root.addView(colors)
   root.addView(Button(this).apply { text="KIYIM PNG TANLASH"; setOnClickListener { picker.launch("image/*") } },LinearLayout.LayoutParams(-1,dp(48)))
@@ -76,7 +76,7 @@ class MainActivity : ComponentActivity() {
      if(media==null){proxy.close();return@setAnalyzer}
      analyzing=true
      detector.process(InputImage.fromMediaImage(media,proxy.imageInfo.rotationDegrees))
-      .addOnSuccessListener { pose -> overlay.updatePose(pose,proxy.width,proxy.height); runOnUiThread { status.text=if(pose.allPoseLandmarks.isEmpty()) "Tanani kadrga to‘liq kiriting" else "Tana aniqlandi · AR faol" } }
+      .addOnSuccessListener { pose -> garmentOverlay.updatePose(pose,proxy.width,proxy.height); runOnUiThread { status.text=if(pose.allPoseLandmarks.isEmpty()) "Tanani kadrga to‘liq kiriting" else "Tana aniqlandi · AR faol" } }
       .addOnFailureListener { runOnUiThread { status.text="Tana aniqlashda xatolik" } }
       .addOnCompleteListener { analyzing=false; proxy.close() }
     }
@@ -86,7 +86,7 @@ class MainActivity : ComponentActivity() {
    } catch(e:Exception) { status.text="Kamera xatosi: ${e.localizedMessage}" }
   },ContextCompat.getMainExecutor(this))
  }
- private fun loadGarment(uri:Uri) { try { contentResolver.openInputStream(uri).use { overlay.setGarment(BitmapFactory.decodeStream(it)) }; status.text="Kiyim rasmi tanlandi" } catch(_:Exception) { status.text="Rasmni ochib bo‘lmadi" } }
+ private fun loadGarment(uri:Uri) { try { contentResolver.openInputStream(uri).use { garmentOverlay.setGarment(BitmapFactory.decodeStream(it)) }; status.text="Kiyim rasmi tanlandi" } catch(_:Exception) { status.text="Rasmni ochib bo‘lmadi" } }
  private fun label(t:String,s:Float,c:Int,b:Boolean)=TextView(this).apply { text=t; textSize=s; setTextColor(c); if(b) typeface=Typeface.DEFAULT_BOLD; setPadding(0,dp(6),0,dp(6)) }
  private fun dp(v:Int)=(v*resources.displayMetrics.density).roundToInt()
  override fun onDestroy(){ super.onDestroy(); provider?.unbindAll(); detector.close(); executor.shutdown() }
